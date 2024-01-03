@@ -23,7 +23,7 @@ function displayGrid() {
             row.appendChild(cell);
             cell.addEventListener("click", () => {
                 pvpPlay(j);
-                console.log(array);
+                displayContent();
             });
         });
     });
@@ -39,12 +39,22 @@ function pvpPlay(j) {
     });
 }
 
-displayGrid();
+function displayContent() {
+    array.forEach((e, i) => {
+        i++;
+        const row = document.querySelector(`#gridContainer > :nth-child(${i})`);
+        e.forEach((el, j) => {
+            j++;
+            const cell = row.querySelector(`:nth-child(${j})`);
+            if (el == 1) {
+                cell.innerHTML = "";
+                const img = document.createElement("img");
+                img.src = "./assets/images/red-token.png";
+                img.style.width = "63px";
+                cell.appendChild(img);
+            }
+        });
+    });
+}
 
-const cells = document.querySelectorAll(".cell");
-cells.forEach((element) => {
-    const redToken = document.createElement("img");
-    redToken.src = "./assets/images/red-token.png";
-    redToken.style.width = "63px";
-    element.appendChild(redToken);
-});
+displayGrid();

@@ -71,6 +71,8 @@ main {
     width: 800px;
     left: calc(50vw - 400px);
     top: 50px;
+    z-index: -1;
+    user-select: none;
 }
 
 #gridContainer {
@@ -89,4 +91,8 @@ main {
     justify-content: center;
     align-items: center;
     flex: 1;
+}
+
+.cell img {
+    user-select: none;
 }
