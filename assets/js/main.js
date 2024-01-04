@@ -56,25 +56,30 @@ function displayGrid() {
 }
 
 function pvpPlay(j, player) {
-    array.forEach((e, i) => {
+    for (let i = array.length - 1; i >= 0; i--) {
+        const e = array[i];
         if (i == array.length - 1) {
+            if (e[j] == 0) {
+                e[j] = player;
+                displayContent();
+                if (player == 1) {
+                    playerSwitch = 2;
+                } else {
+                    playerSwitch = 1;
+                }
+                break;
+            }
+        } else if (array[i + 1][j] != 0 && e[j] == 0) {
             e[j] = player;
+            displayContent();
             if (player == 1) {
                 playerSwitch = 2;
             } else {
                 playerSwitch = 1;
             }
-            displayContent(i);
-        } else if (array[i + 1][j] != 0) {
-            e[j] = player;
-            if (player == 1) {
-                playerSwitch = 2;
-            } else {
-                playerSwitch = 1;
-            }
-            displayContent(i);
+            break;
         }
-    });
+    }
 }
 
 function displayContent() {
@@ -107,8 +112,9 @@ function tokenAnimation(rowIndex, cell, token) {
     cell.appendChild(img);
 }
 
-function check() {
+function check(i, j) {
     //Lines
+    console.log("i :", i, "j :", j);
     //Cols
     //Diags
 }
