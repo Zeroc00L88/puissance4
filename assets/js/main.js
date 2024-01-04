@@ -7,7 +7,7 @@ let array = [
     [0, 0, 0, 0, 0, 0, 0],
 ];
 
-let playerSwitch = true;
+let playerSwitch = 1;
 let cellH;
 const redToken = "./assets/images/red-token.png";
 const yellowToken = "./assets/images/yellow-token.png";
@@ -24,8 +24,7 @@ function displayGrid() {
         dropCell.classList.add("dropCell");
         dropLine.appendChild(dropCell);
         dropCell.addEventListener("click", () => {
-            pvpPlay(index);
-            console.log("test");
+            pvpPlay(index, playerSwitch);
         });
     });
     const gridContainer = document.createElement("div");
@@ -40,19 +39,31 @@ function displayGrid() {
             cell.classList.add("cell");
             row.appendChild(cell);
             cell.addEventListener("click", () => {
-                pvpPlay(j);
+                pvpPlay(j, playerSwitch);
             });
         });
     });
 }
 
-function pvpPlay(j) {
+function pvpPlay(j, player) {
     array.forEach((e, i) => {
         if (i == array.length - 1) {
-            e[j] = 1;
+            e[j] = player;
+            // player == 1 ? (playerSwitch = 2) : (playerSwitch = 1);
+            if (player == 1) {
+                playerSwitch = 2;
+            } else {
+                playerSwitch = 1;
+            }
             displayContent(i);
         } else if (array[i + 1][j] != 0) {
-            e[j] = 1;
+            e[j] = player;
+            // player == 1 ? (playerSwitch = 2) : (playerSwitch = 1);
+            if (player == 1) {
+                playerSwitch = 2;
+            } else {
+                playerSwitch = 1;
+            }
             displayContent(i);
         }
     });
@@ -66,15 +77,15 @@ function displayContent() {
             j++;
             const cell = row.querySelector(`:nth-child(${j})`);
             if (el == 1 && cell.innerHTML == "") {
-                insertToken(i, cell, redToken);
-            } else if (el == 2) {
-                insertToken(i, cell, yellowToken);
+                tokenAnimation(i, cell, redToken);
+            } else if (el == 2 && cell.innerHTML == "") {
+                tokenAnimation(i, cell, yellowToken);
             }
         });
     });
 }
 
-function insertToken(rowIndex, cell, token) {
+function tokenAnimation(rowIndex, cell, token) {
     const dropHeight = rowIndex * cell.clientHeight;
     const dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
     const img = document.createElement("img");
