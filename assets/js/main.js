@@ -13,8 +13,21 @@ const redToken = "./assets/images/red-token.png";
 const yellowToken = "./assets/images/yellow-token.png";
 
 const gameContainer = document.querySelector("#gameContainer");
+const main = document.querySelector("main");
 
 function displayGrid() {
+    const dropLine = document.createElement("div");
+    dropLine.id = "dropLine";
+    main.prepend(dropLine);
+    array[0].forEach((elmt, index) => {
+        const dropCell = document.createElement("div");
+        dropCell.classList.add("dropCell");
+        dropLine.appendChild(dropCell);
+        dropCell.addEventListener("click", () => {
+            pvpPlay(index);
+            console.log("test");
+        });
+    });
     const gridContainer = document.createElement("div");
     gridContainer.id = "gridContainer";
     gameContainer.appendChild(gridContainer);
