@@ -54,8 +54,16 @@ header {
 
 main {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#dropLine {
+    position: absolute;
+    height: 82px;
+    width: 604px;
+    top: 80px;
 }
 
 #gameContainer {

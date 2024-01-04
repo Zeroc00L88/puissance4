@@ -9,6 +9,8 @@ let array = [
 
 let playerSwitch = true;
 let cellH;
+const redToken = "./assets/images/red-token.png";
+const yellowToken = "./assets/images/yellow-token.png";
 
 const gameContainer = document.querySelector("#gameContainer");
 
@@ -43,7 +45,7 @@ function pvpPlay(j) {
     });
 }
 
-function displayContent(indexH) {
+function displayContent() {
     array.forEach((e, i) => {
         i++;
         const row = document.querySelector(`#gridContainer > :nth-child(${i})`);
@@ -51,26 +53,26 @@ function displayContent(indexH) {
             j++;
             const cell = row.querySelector(`:nth-child(${j})`);
             if (el == 1 && cell.innerHTML == "") {
-                const dropHeight = i * cell.clientHeight;
-                const dropTime = dropHeight / 1;
-                const img = document.createElement("img");
-                img.src = "./assets/images/red-token.png";
-                img.style.width = "63px";
-                img.style.transform = `translateY(-${dropHeight}px)`;
-                setTimeout(() => {
-                    img.style.transition = `transform ${dropTime}ms ease-in`;
-                    img.style.transform = "translateY(0)";
-                }, 50);
-                cell.appendChild(img);
+                insertToken(i, cell, redToken);
             } else if (el == 2) {
-                cell.innerHTML = "";
-                const img = document.createElement("img");
-                img.src = "./assets/images/yellow-token.png";
-                img.style.width = "63px";
-                cell.appendChild(img);
+                insertToken(i, cell, yellowToken);
             }
         });
     });
+}
+
+function insertToken(rowIndex, cell, token) {
+    const dropHeight = rowIndex * cell.clientHeight;
+    const dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
+    const img = document.createElement("img");
+    img.src = token;
+    img.style.width = "63px";
+    img.style.transform = `translateY(-${dropHeight}px)`;
+    setTimeout(() => {
+        img.style.transition = `transform ${dropTime}ms ease-in`;
+        img.style.transform = "translateY(0)";
+    }, 50);
+    cell.appendChild(img);
 }
 
 displayGrid();
