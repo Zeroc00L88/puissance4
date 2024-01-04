@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+:root {
+    --indicatorColor: #ff3c2f;
+}
+
 .window {
     position: absolute;
     display: flex;
@@ -109,7 +113,7 @@ main {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 15px solid #ff3c2f;
+    border-top: 15px solid var(--indicatorColor);
 }
 
 .cell {

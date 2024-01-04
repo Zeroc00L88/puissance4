@@ -11,6 +11,8 @@ let playerSwitch = 1;
 let cellH;
 const redToken = "./assets/images/red-token.png";
 const yellowToken = "./assets/images/yellow-token.png";
+const redTokenColor = "#FF3C2F";
+const yellowTokenColor = "#FFD933";
 
 const gameContainer = document.querySelector("#gameContainer");
 const main = document.querySelector("main");
@@ -25,6 +27,17 @@ function displayGrid() {
         dropLine.appendChild(dropCell);
         dropCell.addEventListener("click", () => {
             pvpPlay(index, playerSwitch);
+            if (playerSwitch == 1) {
+                document.documentElement.style.setProperty(
+                    "--indicatorColor",
+                    redTokenColor,
+                );
+            } else {
+                document.documentElement.style.setProperty(
+                    "--indicatorColor",
+                    yellowTokenColor,
+                );
+            }
         });
     });
     const gridContainer = document.createElement("div");
@@ -38,9 +51,6 @@ function displayGrid() {
             const cell = document.createElement("div");
             cell.classList.add("cell");
             row.appendChild(cell);
-            cell.addEventListener("click", () => {
-                pvpPlay(j, playerSwitch);
-            });
         });
     });
 }
@@ -49,7 +59,6 @@ function pvpPlay(j, player) {
     array.forEach((e, i) => {
         if (i == array.length - 1) {
             e[j] = player;
-            // player == 1 ? (playerSwitch = 2) : (playerSwitch = 1);
             if (player == 1) {
                 playerSwitch = 2;
             } else {
@@ -58,7 +67,6 @@ function pvpPlay(j, player) {
             displayContent(i);
         } else if (array[i + 1][j] != 0) {
             e[j] = player;
-            // player == 1 ? (playerSwitch = 2) : (playerSwitch = 1);
             if (player == 1) {
                 playerSwitch = 2;
             } else {
@@ -97,6 +105,12 @@ function tokenAnimation(rowIndex, cell, token) {
         img.style.transform = "translateY(0)";
     }, 50);
     cell.appendChild(img);
+}
+
+function check() {
+    //Lines
+    //Cols
+    //Diags
 }
 
 displayGrid();
