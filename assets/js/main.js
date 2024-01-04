@@ -67,6 +67,7 @@ function pvpPlay(j, player) {
                 } else {
                     playerSwitch = 1;
                 }
+                check(i, j, player);
                 break;
             }
         } else if (array[i + 1][j] != 0 && e[j] == 0) {
@@ -77,6 +78,7 @@ function pvpPlay(j, player) {
             } else {
                 playerSwitch = 1;
             }
+            check(i, j, player);
             break;
         }
     }
@@ -93,7 +95,7 @@ function displayContent(i, j, player) {
 }
 
 function tokenAnimation(rowIndex, cell, token) {
-    const dropHeight = rowIndex * cell.clientHeight;
+    const dropHeight = rowIndex * cell.clientHeight + cell.clientHeight;
     const dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
     const img = document.createElement("img");
     img.src = token;
@@ -106,11 +108,30 @@ function tokenAnimation(rowIndex, cell, token) {
     cell.appendChild(img);
 }
 
-function check(i, j) {
+function check(i, j, player) {
+    let winLine = [];
+
     //Lines
-    console.log("i :", i, "j :", j);
+    for (let index = 0; index < array[i].length; index++) {
+        const e = array[i][index];
+        if (e == player) {
+            winLine.push([i, index]);
+        } else {
+            winLine = [];
+        }
+        console.log(winLine.length);
+        if (winLine.length == 4) {
+            gameOver(winLine);
+            break;
+        }
+    }
+
     //Cols
     //Diags
 }
 
+function gameOver(line) {
+    console.log("Game over");
+    console.log(line);
+}
 displayGrid();
