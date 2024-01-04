@@ -61,7 +61,7 @@ function pvpPlay(j, player) {
         if (i == array.length - 1) {
             if (e[j] == 0) {
                 e[j] = player;
-                displayContent();
+                displayContent(i, j, player);
                 if (player == 1) {
                     playerSwitch = 2;
                 } else {
@@ -71,7 +71,7 @@ function pvpPlay(j, player) {
             }
         } else if (array[i + 1][j] != 0 && e[j] == 0) {
             e[j] = player;
-            displayContent();
+            displayContent(i, j, player);
             if (player == 1) {
                 playerSwitch = 2;
             } else {
@@ -82,20 +82,14 @@ function pvpPlay(j, player) {
     }
 }
 
-function displayContent() {
-    array.forEach((e, i) => {
-        i++;
-        const row = document.querySelector(`#gridContainer > :nth-child(${i})`);
-        e.forEach((el, j) => {
-            j++;
-            const cell = row.querySelector(`:nth-child(${j})`);
-            if (el == 1 && cell.innerHTML == "") {
-                tokenAnimation(i, cell, redToken);
-            } else if (el == 2 && cell.innerHTML == "") {
-                tokenAnimation(i, cell, yellowToken);
-            }
-        });
-    });
+function displayContent(i, j, player) {
+    const row = document.querySelector(`#gridContainer > :nth-child(${i + 1})`);
+    const cell = row.querySelector(`:nth-child(${j + 1})`);
+    if (player == 1) {
+        tokenAnimation(i, cell, redToken);
+    } else if (player == 2) {
+        tokenAnimation(i, cell, yellowToken);
+    }
 }
 
 function tokenAnimation(rowIndex, cell, token) {
