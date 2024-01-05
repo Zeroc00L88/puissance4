@@ -120,7 +120,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine);
+            return gameOver(winLine, player);
         }
     }
     winLine = [];
@@ -134,7 +134,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine);
+            return gameOver(winLine, player);
         }
     }
     winLine = [];
@@ -154,7 +154,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine);
+            return gameOver(winLine, player);
         }
         indexI--;
         indexJ++;
@@ -175,14 +175,24 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine);
+            return gameOver(winLine, player);
         }
         indexI--;
         indexJ--;
     }
 }
 
-function gameOver(line) {
-    console.log("Game over");
+function gameOver(line, player) {
+    let winMsg = "";
+    if (player == 1) {
+        winMsg = "Red win !";
+    } else {
+        winMsg = "Yellow win !";
+    }
+    console.log(winMsg);
+    document
+        .querySelectorAll(".dropCell")
+        .forEach((e) => (e.style.pointerEvents = "none"));
 }
+
 displayGrid();
