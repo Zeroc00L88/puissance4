@@ -8,7 +8,7 @@ let array = [
 ];
 
 let playerSwitch = 1;
-let cellH;
+let isGameOver = false;
 const redToken = "./assets/images/red-token.png";
 const yellowToken = "./assets/images/yellow-token.png";
 const redTokenColor = "#FF3C2F";
@@ -35,6 +35,20 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function playerToggle() {
+    if (playerSwitch == 1) {
+        document.documentElement.style.setProperty(
+            "--indicatorColor",
+            redTokenColor,
+        );
+    } else {
+        document.documentElement.style.setProperty(
+            "--indicatorColor",
+            yellowTokenColor,
+        );
+    }
+}
+
 function displayGrid(mode) {
     const dropLine = document.createElement("div");
     dropLine.id = "dropLine";
@@ -47,19 +61,25 @@ function displayGrid(mode) {
             switch (mode) {
                 case "pvp":
                     pvpPlay(index, playerSwitch);
-                    if (playerSwitch == 1) {
-                        document.documentElement.style.setProperty(
-                            "--indicatorColor",
-                            redTokenColor,
-                        );
-                    } else {
-                        document.documentElement.style.setProperty(
-                            "--indicatorColor",
-                            yellowTokenColor,
-                        );
-                    }
+                    playerToggle();
                     break;
-                case "pvp":
+                case "pvc":
+                    pvpPlay(index, playerSwitch);
+                    playerToggle();
+                    if (!isGameOver) {
+                        document
+                            .querySelectorAll(".dropCell")
+                            .forEach((e) => (e.style.pointerEvents = "none"));
+                        setTimeout(() => {
+                            pvpPlay(getRandom(0, 6), playerSwitch);
+                            playerToggle();
+                            document
+                                .querySelectorAll(".dropCell")
+                                .forEach(
+                                    (e) => (e.style.pointerEvents = "auto"),
+                                );
+                        }, 1000);
+                    }
                     break;
             }
         });
@@ -204,14 +224,23 @@ function check(i, j, player) {
         indexI--;
         indexJ--;
     }
+
+    // draw match
+    if (!array.some((e) => e.includes(0))) {
+        gameOver(null, player);
+        return true;
+    }
 }
 
 function gameOver(line, player) {
+    isGameOver = true;
     let winMsg = "";
-    if (player == 1) {
+    if (player == 1 && line != null) {
         winMsg = "Red win !";
-    } else {
+    } else if (player == 2 && line != null) {
         winMsg = "Yellow win !";
+    } else {
+        winMsg = "Draw !";
     }
     console.log(winMsg);
     document
