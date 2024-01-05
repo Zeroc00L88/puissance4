@@ -22,11 +22,13 @@ const pvpBtn = document.querySelector("#pvpBtn");
 const pvcBtn = document.querySelector("#pvcBtn");
 
 pvpBtn.addEventListener("click", () => {
+    isGameOver = false;
     displayGrid("pvp");
     menu.classList.add("hidden");
 });
 
 pvcBtn.addEventListener("click", () => {
+    isGameOver = false;
     displayGrid("pvc");
     menu.classList.add("hidden");
 });
@@ -64,6 +66,7 @@ function displayGrid(mode) {
                     playerToggle();
                     break;
                 case "pvc":
+                    console.log("pvc");
                     pvpPlay(index, playerSwitch);
                     playerToggle();
                     if (!isGameOver) {
@@ -71,13 +74,18 @@ function displayGrid(mode) {
                             .querySelectorAll(".dropCell")
                             .forEach((e) => (e.style.pointerEvents = "none"));
                         setTimeout(() => {
-                            pvpPlay(getRandom(0, 6), playerSwitch);
+                            pvpPlay(
+                                getRandom(0, array[0].length - 1),
+                                playerSwitch,
+                            );
                             playerToggle();
-                            document
-                                .querySelectorAll(".dropCell")
-                                .forEach(
-                                    (e) => (e.style.pointerEvents = "auto"),
-                                );
+                            if (!isGameOver) {
+                                document
+                                    .querySelectorAll(".dropCell")
+                                    .forEach(
+                                        (e) => (e.style.pointerEvents = "auto"),
+                                    );
+                            }
                         }, 1000);
                     }
                     break;
@@ -234,6 +242,10 @@ function check(i, j, player) {
 
 function gameOver(line, player) {
     isGameOver = true;
+    playerSwitch = 1;
+    document
+        .querySelectorAll(".dropCell")
+        .forEach((e) => (e.style.pointerEvents = "none"));
     let winMsg = "";
     if (player == 1 && line != null) {
         winMsg = "Red win !";
@@ -243,9 +255,6 @@ function gameOver(line, player) {
         winMsg = "Draw !";
     }
     console.log(winMsg);
-    document
-        .querySelectorAll(".dropCell")
-        .forEach((e) => (e.style.pointerEvents = "none"));
     setTimeout(() => {
         gameOverMenu.classList.remove("hidden");
         gameOverMenu.querySelector("p").innerHTML = winMsg;
