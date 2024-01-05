@@ -16,8 +16,26 @@ const yellowTokenColor = "#FFD933";
 
 const gameContainer = document.querySelector("#gameContainer");
 const main = document.querySelector("main");
+const gameOverMenu = document.querySelector("#gameOver");
+const menu = document.querySelector("#menu");
+const pvpBtn = document.querySelector("#pvpBtn");
+const pvcBtn = document.querySelector("#pvcBtn");
 
-function displayGrid() {
+pvpBtn.addEventListener("click", () => {
+    displayGrid("pvp");
+    menu.classList.add("hidden");
+});
+
+pvcBtn.addEventListener("click", () => {
+    displayGrid("pvc");
+    menu.classList.add("hidden");
+});
+
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function displayGrid(mode) {
     const dropLine = document.createElement("div");
     dropLine.id = "dropLine";
     main.prepend(dropLine);
@@ -26,17 +44,23 @@ function displayGrid() {
         dropCell.classList.add("dropCell");
         dropLine.appendChild(dropCell);
         dropCell.addEventListener("click", () => {
-            pvpPlay(index, playerSwitch);
-            if (playerSwitch == 1) {
-                document.documentElement.style.setProperty(
-                    "--indicatorColor",
-                    redTokenColor,
-                );
-            } else {
-                document.documentElement.style.setProperty(
-                    "--indicatorColor",
-                    yellowTokenColor,
-                );
+            switch (mode) {
+                case "pvp":
+                    pvpPlay(index, playerSwitch);
+                    if (playerSwitch == 1) {
+                        document.documentElement.style.setProperty(
+                            "--indicatorColor",
+                            redTokenColor,
+                        );
+                    } else {
+                        document.documentElement.style.setProperty(
+                            "--indicatorColor",
+                            yellowTokenColor,
+                        );
+                    }
+                    break;
+                case "pvp":
+                    break;
             }
         });
     });
@@ -193,6 +217,17 @@ function gameOver(line, player) {
     document
         .querySelectorAll(".dropCell")
         .forEach((e) => (e.style.pointerEvents = "none"));
+    setTimeout(() => {
+        gameOverMenu.classList.remove("hidden");
+        gameOverMenu.querySelector("p").innerHTML = winMsg;
+    }, 1000);
+    document.querySelector("#replay").addEventListener("click", () => {
+        document.querySelector("#dropLine").remove();
+        document.querySelector("#gridContainer").remove();
+        gameOverMenu.classList.add("hidden");
+        menu.classList.remove("hidden");
+        array.map((e) => {
+            e.fill(0);
+        });
+    });
 }
-
-displayGrid();

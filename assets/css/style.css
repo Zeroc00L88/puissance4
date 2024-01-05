@@ -29,6 +29,13 @@
     color: white;
 }
 
+.window button {
+    width: 220px;
+    height: 80px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .hidden {
     display: none;
 }
