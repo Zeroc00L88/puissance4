@@ -160,11 +160,29 @@ function check(i, j, player) {
         indexJ++;
     }
     winLine = [];
+
     //Diag Left
+    indexI = i;
+    indexJ = j;
+    while (indexI < array.length - 1 && indexJ < array[i].length) {
+        indexI++;
+        indexJ++;
+    }
+    while (indexI >= 0 && indexJ >= 0) {
+        if (array[indexI][indexJ] == player) {
+            winLine.push([indexI, indexJ]);
+        } else {
+            winLine = [];
+        }
+        if (winLine.length == 4) {
+            return gameOver(winLine);
+        }
+        indexI--;
+        indexJ--;
+    }
 }
 
 function gameOver(line) {
     console.log("Game over");
-    console.log(line);
 }
 displayGrid();
