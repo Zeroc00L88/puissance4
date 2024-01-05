@@ -119,15 +119,48 @@ function check(i, j, player) {
         } else {
             winLine = [];
         }
-        console.log(winLine.length);
         if (winLine.length == 4) {
-            gameOver(winLine);
-            break;
+            return gameOver(winLine);
         }
     }
+    winLine = [];
 
     //Cols
-    //Diags
+    for (let index = 0; index < array.length; index++) {
+        const e = array[index][j];
+        if (e == player) {
+            winLine.push([index, j]);
+        } else {
+            winLine = [];
+        }
+        if (winLine.length == 4) {
+            return gameOver(winLine);
+        }
+    }
+    winLine = [];
+
+    //Diag right
+    let indexI = i;
+    let indexJ = j;
+    while (indexI < array.length - 1 && indexJ > 0) {
+        indexI++;
+        indexJ--;
+    }
+
+    while (indexI >= 0 && indexJ < array[i].length) {
+        if (array[indexI][indexJ] == player) {
+            winLine.push([indexI, indexJ]);
+        } else {
+            winLine = [];
+        }
+        if (winLine.length == 4) {
+            return gameOver(winLine);
+        }
+        indexI--;
+        indexJ++;
+    }
+    winLine = [];
+    //Diag Left
 }
 
 function gameOver(line) {
