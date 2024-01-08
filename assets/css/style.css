@@ -5,6 +5,8 @@
 
 :root {
     --indicatorColor: #ff3c2f;
+    --dropHeight: 1px;
+    --dropTime: 1s;
 }
 
 .window {
@@ -137,6 +139,19 @@ main {
 
 .bright {
     animation: brightAnim 500ms infinite ease;
+}
+
+.tokenAnim {
+    animation: var(--dropTime) tokAnim ease-in;
+}
+
+@keyframes tokAnim {
+    0% {
+        transform: translateY(var(--dropHeight));
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 @keyframes brightAnim {

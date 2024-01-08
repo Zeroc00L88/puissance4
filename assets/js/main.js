@@ -78,6 +78,7 @@ function displayGrid(mode) {
                     play(index, playerSwitch);
                     playerToggle();
                     if (!isGameOver) {
+                        // Block player click during computer play
                         document
                             .querySelectorAll(".dropCell")
                             .forEach((e) => (e.style.pointerEvents = "none"));
@@ -87,13 +88,12 @@ function displayGrid(mode) {
                                 playerSwitch,
                             );
                             playerToggle();
-                            if (!isGameOver) {
-                                document
-                                    .querySelectorAll(".dropCell")
-                                    .forEach(
-                                        (e) => (e.style.pointerEvents = "auto"),
-                                    );
-                            }
+                            // Unblick
+                            document
+                                .querySelectorAll(".dropCell")
+                                .forEach(
+                                    (e) => (e.style.pointerEvents = "auto"),
+                                );
                         }, 1000);
                     }
                     break;
@@ -103,11 +103,11 @@ function displayGrid(mode) {
     const gridContainer = document.createElement("div");
     gridContainer.id = "gridContainer";
     gameContainer.appendChild(gridContainer);
-    array.forEach((e, i) => {
+    array.forEach((e) => {
         const row = document.createElement("div");
         row.classList.add("row");
         gridContainer.appendChild(row);
-        e.forEach((el, j) => {
+        e.forEach(() => {
             const cell = document.createElement("div");
             cell.classList.add("cell");
             row.appendChild(cell);
@@ -158,17 +158,17 @@ function displayContent(i, j, player) {
 
 // Animate the token
 function tokenAnimation(rowIndex, cell, token) {
-    const dropHeight = rowIndex * cell.clientHeight + cell.clientHeight;
-    const dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
+    let dropHeight = rowIndex * cell.clientHeight + cell.clientHeight;
+    let dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
+    dropHeight = "-" + dropHeight + "px";
+    dropTime = dropTime + "ms";
     const img = document.createElement("img");
+    cell.appendChild(img);
     img.src = token;
     img.style.width = "63px";
-    img.style.transform = `translateY(-${dropHeight}px)`;
-    setTimeout(() => {
-        img.style.transition = `transform ${dropTime}ms ease-in`;
-        img.style.transform = "translateY(0)";
-    }, 50);
-    cell.appendChild(img);
+    document.documentElement.style.setProperty("--dropHeight", dropHeight);
+    document.documentElement.style.setProperty("--dropTime", dropTime);
+    img.classList.add("tokenAnim");
 }
 
 // Check for win on each turn
@@ -288,6 +288,7 @@ async function gameOver(line, player) {
         const cellImage = row.querySelector(`:nth-child(${e[1] + 1}) > img`);
         await sleep(0.125);
         console.log("sdf");
+        cellImage.classList.remove("tokenAnim");
         cellImage.classList.add("bright");
     }
 }
