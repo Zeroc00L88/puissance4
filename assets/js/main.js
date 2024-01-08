@@ -77,23 +77,17 @@ function displayGrid(mode) {
                     console.log("pvc");
                     play(index, playerSwitch);
                     playerToggle();
+                    // Block player click during computer play
+                    clickable(false);
                     if (!isGameOver) {
-                        // Block player click during computer play
-                        document
-                            .querySelectorAll(".dropCell")
-                            .forEach((e) => (e.style.pointerEvents = "none"));
                         setTimeout(() => {
                             play(
                                 getRandom(0, array[0].length - 1),
                                 playerSwitch,
                             );
                             playerToggle();
-                            // Unblick
-                            document
-                                .querySelectorAll(".dropCell")
-                                .forEach(
-                                    (e) => (e.style.pointerEvents = "auto"),
-                                );
+                            // Unblock
+                            clickable(true);
                         }, 1000);
                     }
                     break;
@@ -113,6 +107,18 @@ function displayGrid(mode) {
             row.appendChild(cell);
         });
     });
+}
+
+function clickable(clickable) {
+    if (clickable) {
+        document
+            .querySelectorAll(".dropCell")
+            .forEach((e) => (e.style.pointerEvents = "auto"));
+    } else {
+        document
+            .querySelectorAll(".dropCell")
+            .forEach((e) => (e.style.pointerEvents = "none"));
+    }
 }
 
 // Play function : chose the last free (0) from top to bottom
@@ -244,9 +250,6 @@ async function check(i, j, player) {
 async function gameOver(line, player) {
     isGameOver = true;
     playerSwitch = 1;
-    document
-        .querySelectorAll(".dropCell")
-        .forEach((e) => (e.style.pointerEvents = "none"));
     let winMsg = "";
     if (player == 1 && line != null) {
         winMsg = "Red win !";
@@ -255,10 +258,8 @@ async function gameOver(line, player) {
     } else {
         winMsg = "Draw !";
     }
-    setTimeout(() => {
-        gameOverMenu.classList.remove("hidden");
-        gameOverMenu.querySelector("p").innerHTML = winMsg;
-    }, 1000);
+    gameOverMenu.classList.remove("hidden");
+    gameOverMenu.querySelector("p").innerHTML = winMsg;
     document.querySelector("#replay").addEventListener("click", () => {
         document.querySelector("#dropLine").remove();
         document.querySelector("#gridContainer").remove();
@@ -275,7 +276,6 @@ async function gameOver(line, player) {
         );
         const cellImage = row.querySelector(`:nth-child(${e[1] + 1}) > img`);
         await sleep(0.125);
-        console.log("sdf");
         cellImage.classList.remove("tokenAnim");
         cellImage.classList.add("bright");
     }
