@@ -1,3 +1,4 @@
+// Array that define the map of the game
 let array = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -7,13 +8,16 @@ let array = [
     [0, 0, 0, 0, 0, 0, 0],
 ];
 
-let playerSwitch = 1;
-let isGameOver = false;
+let playerSwitch = 1; // Variable to chose player
+let isGameOver = false; // Boolean game over
+
+// Tokens properties :
 const redToken = "./assets/images/red-token.png";
 const yellowToken = "./assets/images/yellow-token.png";
 const redTokenColor = "#FF3C2F";
 const yellowTokenColor = "#FFD933";
 
+// DOM queries
 const gameContainer = document.querySelector("#gameContainer");
 const main = document.querySelector("main");
 const gameOverMenu = document.querySelector("#gameOver");
@@ -21,6 +25,7 @@ const menu = document.querySelector("#menu");
 const pvpBtn = document.querySelector("#pvpBtn");
 const pvcBtn = document.querySelector("#pvcBtn");
 
+// Listeners
 pvpBtn.addEventListener("click", () => {
     isGameOver = false;
     displayGrid("pvp");
@@ -33,10 +38,12 @@ pvcBtn.addEventListener("click", () => {
     menu.classList.add("hidden");
 });
 
+// Random Nbr generator
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Toggle player : change arrow indicator property
 function playerToggle() {
     if (playerSwitch == 1) {
         document.documentElement.style.setProperty(
@@ -51,6 +58,7 @@ function playerToggle() {
     }
 }
 
+// Displaying main game
 function displayGrid(mode) {
     const dropLine = document.createElement("div");
     dropLine.id = "dropLine";
@@ -62,19 +70,19 @@ function displayGrid(mode) {
         dropCell.addEventListener("click", () => {
             switch (mode) {
                 case "pvp":
-                    pvpPlay(index, playerSwitch);
+                    play(index, playerSwitch);
                     playerToggle();
                     break;
                 case "pvc":
                     console.log("pvc");
-                    pvpPlay(index, playerSwitch);
+                    play(index, playerSwitch);
                     playerToggle();
                     if (!isGameOver) {
                         document
                             .querySelectorAll(".dropCell")
                             .forEach((e) => (e.style.pointerEvents = "none"));
                         setTimeout(() => {
-                            pvpPlay(
+                            play(
                                 getRandom(0, array[0].length - 1),
                                 playerSwitch,
                             );
@@ -107,7 +115,8 @@ function displayGrid(mode) {
     });
 }
 
-function pvpPlay(j, player) {
+// Play function : chose the last free (0) from top to bottom, space in the array to change it by 1 or 2 depending player
+function play(j, player) {
     for (let i = array.length - 1; i >= 0; i--) {
         const e = array[i];
         if (i == array.length - 1) {
@@ -136,6 +145,7 @@ function pvpPlay(j, player) {
     }
 }
 
+// Refresh to display token (call tokenAnimate function)
 function displayContent(i, j, player) {
     const row = document.querySelector(`#gridContainer > :nth-child(${i + 1})`);
     const cell = row.querySelector(`:nth-child(${j + 1})`);
@@ -146,6 +156,7 @@ function displayContent(i, j, player) {
     }
 }
 
+// Animate the token
 function tokenAnimation(rowIndex, cell, token) {
     const dropHeight = rowIndex * cell.clientHeight + cell.clientHeight;
     const dropTime = dropHeight / 0.9; // this number set the speed (px/ms)
@@ -160,7 +171,8 @@ function tokenAnimation(rowIndex, cell, token) {
     cell.appendChild(img);
 }
 
-function check(i, j, player) {
+// Check for win on each turn
+async function check(i, j, player) {
     let winLine = [];
 
     //Lines
@@ -172,7 +184,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine, player);
+            return await gameOver(winLine, player);
         }
     }
     winLine = [];
@@ -186,7 +198,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine, player);
+            return await gameOver(winLine, player);
         }
     }
     winLine = [];
@@ -206,7 +218,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine, player);
+            return await gameOver(winLine, player);
         }
         indexI--;
         indexJ++;
@@ -227,7 +239,7 @@ function check(i, j, player) {
             winLine = [];
         }
         if (winLine.length == 4) {
-            return gameOver(winLine, player);
+            return await gameOver(winLine, player);
         }
         indexI--;
         indexJ--;
@@ -235,12 +247,13 @@ function check(i, j, player) {
 
     // draw match
     if (!array.some((e) => e.includes(0))) {
-        gameOver(null, player);
+        await gameOver(null, player);
         return true;
     }
 }
 
-function gameOver(line, player) {
+// gameOver function : display which color win dans reset game variables.
+async function gameOver(line, player) {
     isGameOver = true;
     playerSwitch = 1;
     document
@@ -254,7 +267,6 @@ function gameOver(line, player) {
     } else {
         winMsg = "Draw !";
     }
-    console.log(winMsg);
     setTimeout(() => {
         gameOverMenu.classList.remove("hidden");
         gameOverMenu.querySelector("p").innerHTML = winMsg;
@@ -268,4 +280,17 @@ function gameOver(line, player) {
             e.fill(0);
         });
     });
+    for (let i = 0; i < line.length; i++) {
+        const e = line[i];
+        const row = document.querySelector(
+            `#gridContainer > :nth-child(${e[0] + 1})`,
+        );
+        const cellImage = row.querySelector(`:nth-child(${e[1] + 1}) > img`);
+        await sleep(0.125);
+        console.log("sdf");
+        cellImage.classList.add("bright");
+    }
+}
+async function sleep(seconds) {
+    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
