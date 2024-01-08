@@ -115,23 +115,11 @@ function displayGrid(mode) {
     });
 }
 
-// Play function : chose the last free (0) from top to bottom, space in the array to change it by 1 or 2 depending player
+// Play function : chose the last free (0) from top to bottom
 function play(j, player) {
     for (let i = array.length - 1; i >= 0; i--) {
         const e = array[i];
-        if (i == array.length - 1) {
-            if (e[j] == 0) {
-                e[j] = player;
-                displayContent(i, j, player);
-                if (player == 1) {
-                    playerSwitch = 2;
-                } else {
-                    playerSwitch = 1;
-                }
-                check(i, j, player);
-                break;
-            }
-        } else if (array[i + 1][j] != 0 && e[j] == 0) {
+        if (e[j] == 0) {
             e[j] = player;
             displayContent(i, j, player);
             if (player == 1) {
