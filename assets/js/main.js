@@ -24,8 +24,19 @@ const gameOverMenu = document.querySelector("#gameOver");
 const menu = document.querySelector("#menu");
 const pvpBtn = document.querySelector("#pvpBtn");
 const pvcBtn = document.querySelector("#pvcBtn");
+const replayBtn = document.querySelector("#replay");
 
 // Listeners
+replayBtn.addEventListener("click", () => {
+    document.querySelector("#dropLine").remove();
+    document.querySelector("#gridContainer").remove();
+    gameOverMenu.classList.add("hidden");
+    menu.classList.remove("hidden");
+    array.map((e) => {
+        e.fill(0);
+    });
+});
+
 pvpBtn.addEventListener("click", () => {
     isGameOver = false;
     displayGrid("pvp");
@@ -241,8 +252,7 @@ async function check(i, j, player) {
 
     // draw match
     if (!array.some((e) => e.includes(0))) {
-        await gameOver(null, player);
-        return true;
+        return await gameOver(null, player);
     }
 }
 
@@ -260,15 +270,6 @@ async function gameOver(line, player) {
     }
     gameOverMenu.classList.remove("hidden");
     gameOverMenu.querySelector("p").innerHTML = winMsg;
-    document.querySelector("#replay").addEventListener("click", () => {
-        document.querySelector("#dropLine").remove();
-        document.querySelector("#gridContainer").remove();
-        gameOverMenu.classList.add("hidden");
-        menu.classList.remove("hidden");
-        array.map((e) => {
-            e.fill(0);
-        });
-    });
     for (let i = 0; i < line.length; i++) {
         const e = line[i];
         const row = document.querySelector(
