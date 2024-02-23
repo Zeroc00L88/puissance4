@@ -110,9 +110,14 @@ main {
 .dropCell {
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
     flex: 1;
     z-index: 1;
+}
+
+.dropCell::after {
+    content: url(../images/arrowDown.webp);
+    color: var(--indicatorColor);
 }
 
 .dropCell:hover::after {
